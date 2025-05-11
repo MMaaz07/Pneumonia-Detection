@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="mysgrade">
+    <meta http-equiv="refresh" content="300">
+    <title>Pneumonia Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('serve_assets', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('serve_assets', filename='js/script.js') }}"></script>
+</head>
+<body>
+    <header>
+        <h1>Pneumonia Detection: AI-Powered Diagnosis</h1>
+        <h3>Upload Your X-ray, Get Instant Insights, and Take Control of Your Health</h3>
+    </header>
+
+    <main>
+        <div class="contents">
+            <strong>Contents</strong> ⬇
+            <a href="#overview">Overview</a>
+            <a href="#causes-symptoms">Causes and Symptoms</a>
+            <a href="#diagnosis">Diagnosis</a>
+            <a href="#medication">Medication</a>
+            <a href="#consultation">Consultation</a>
+
+        </div>
+        <!-- Summary Section -->
+        <section class="section summary">
+            <section id="overview">
+            <h2>Overview</h2>
+            <b><p style="font-size: 28px;">What is Pneumonia?</p></b>
+            <p>Pneumonia is an infection in your lungs caused by bacteria, viruses or fungi. Pneumonia causes your lung tissue to swell (inflammation) and can cause fluid or pus in your lungs. Bacterial pneumonia is usually more severe than viral pneumonia, which often resolves on its own.
+
+                Pneumonia can affect one or both lungs. Pneumonia in both of your lungs is called bilateral or double pneumonia.</p>
+                <div class="image-box">
+                    <h1>Normal Chest X-rays</h1>
+                    <div class="image-grid">
+                        <img src="{{ url_for('serve_assets', filename='images/n1.jpg') }}" alt="Image 1">
+                        <img src="{{ url_for('serve_assets', filename='images/n2.jpg') }}" alt="Image 2">
+                        <img src="{{ url_for('serve_assets', filename='images/n3.jpg') }}" alt="Image 3">
+                    </div>
+                
+                    <!-- Image Grid 2: Bottom row of images --> 
+                     <h1>Pneumonia affected Chest X-rays</h1>
+                    <div class="image-grid">
+                        <img src="{{ url_for('serve_assets', filename='images/p1.jpeg') }}" alt="Image 4">
+                        <img src="{{ url_for('serve_assets', filename='images/p2.jpeg') }}" alt="Image 5">
+                        <img src="{{ url_for('serve_assets', filename='images/p3.jpeg') }}" alt="Image 6">
+                    </div>
+                </div>
+            </section>
+
+            <section id="causes-symptoms">
+                <h2>Causes & Symptoms</h2>
+                <h3>Causes of Pneumonia</h3>
+                <p>Pneumonia can be caused by a variety of factors, including bacterial, viral, or fungal infections. Some of the most common causes include:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type of Pneumonia</th>
+                            <th>Cause</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bacterial Pneumonia</td>
+                            <td>Often caused by Streptococcus Pneumoniae</td>
+                            <td>Bacterial infection that can lead to severe lung inflammation and fluid buildup.</td>
+                        </tr>
+                        <tr>
+                            <td>Viral Pneumonia</td>
+                            <td>Caused by viruses such as influenza or respiratory syncytial virus (RSV)</td>
+                            <td>Typically less severe but can cause complications in vulnerable groups, like the elderly or children.</td>
+                        </tr>
+                        <tr>
+                            <td>Fungal Pneumonia</td>
+                            <td>Fungi like Histoplasma or Coccidioides</td>
+                            <td>Common in immunocompromised individuals, often acquired through inhaling spores from contaminated soil.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Symptoms of Pneumonia</h3>
+                <ul>
+                    <li>Coughing with phlegm</li>
+                    <li>Chest pain or discomfort</li>
+                    <li>Shortness of breath</li>
+                    <li>Fever and chills</li>
+                    <li>Fatigue and weakness</li>
+                    <li>Rapid heartbeat or breathing</li>
+                </ul>
+            </section>
+
+            <section id="diagnosis">
+                <h2>Diagnosis</h2>
+                <!--<h2 style="margin-bottom: 10px;">Diagnose Now</h2>-->
+                <section class="upload-section">
+                    <p style="font-size: 30px; margin-bottom: 10px; margin-top: 0;">Upload X-ray Image</p>
+                    <input type="file" id="xrayUpload" accept="image/*">
+                    <button class="btn" onclick="uploadImage()">Analyze</button>
+                    <h2 class="underline-heading">Analysis Results</h2>
+                    <!--
+                    <div id="results">
+                        <p>No analysis performed yet. Please upload an image.</p>
+                    </div>
+                    -->
+
+                <div id="diagnosisGrid">
+                    <div class="grid-container">
+                        <!-- Left Section: File Name & Diagnosis -->
+                        <div class="grid-item details-section">
+                            <h3>Uploaded File</h3>
+                            <p id="fileName">No file uploaded</p>
+                            <h3>Diagnosis</h3>
+                            <p id="diagnosisResult">Awaiting Analysis...</p>
+                        </div>
+                
+                        <!-- Right Section: Severity Bar -->
+                        <div class="grid-item severity-section">
+                            <h3>Severity Bar</h3>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="severityBar"></div>
+                            </div> 
+                        </div>
+                        <div class="grid-item button-section">
+                            <button class="view-details" onclick="viewVisualization(event)">View Visualization</button>
+                        </div>
+                                           
+                    </div>
+                </div>
+            </section>
+
+        
+
+        <!-- Severity Section -->
+        <section class="section severity-section">
+            <h2>Severity Analysis</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Mild</th>
+                        <th>Severe</th>
+                        <th>Critical</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Temperature (°C)</td>
+                        <td>&lt; 38.0</td>
+                        <td>39.1 - 40.0</td>
+                        <td>&gt; 40.0</td>
+                    </tr>
+                    <tr>
+                        <td>Respiratory Rate</td>
+                        <td>16 - 20 breaths/min</td>
+                        <td>26 - 30 breaths/min</td>
+                        <td>&gt; 30 breaths/min</td>
+                    </tr>
+                    <tr>
+                        <td>Oxygen Saturation (%)</td>
+                        <td>&gt; 94%</td>
+                        <td>85% - 89%</td>
+                        <td>&lt; 85%</td>
+                    </tr>
+                    <tr>
+                        <td>WBC Count (10³/µL)</td>
+                        <td>4 - 10</td>
+                        <td>15 - 20</td>
+                        <td>&gt; 20</td>
+                    </tr>
+                    <tr>
+                        <td>Chest X-Ray</td>
+                        <td>Mild infiltrates</td>
+                        <td>Severe involvement</td>
+                        <td>Massive consolidation</td>
+                    </tr>
+                    <tr>
+                        <td>Cough</td>
+                        <td>Mild</td>
+                        <td>Productive</td>
+                        <td>Blood in sputum</td>
+                    </tr>
+                    <tr>
+                        <td>Chest Pain</td>
+                        <td>Mild</td>
+                        <td>Severe, pleuritic</td>
+                        <td>Constant, severe pain</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Medication Section -->
+        <section id="medication">
+            <h2>Medication</h2>
+            <section class="section medication-section">
+                <h2>Recommended Medications</h2>
+                <div class="medication-container">
+                    <div class="medication-card">
+                        <img src="{{ url_for('serve_assets', filename='icons/bacterial pneumonia icon.png') }}" alt="Bacterial Pneumonia">
+                        <h3>Bacterial Pneumonia</h3>
+                        <p>Common antibiotics like Amoxicillin, Azithromycin, Levofloxacin, and Ceftriaxone are used based on severity.</p>
+                    </div>
+                    <div class="medication-card">
+                        <img src="{{ url_for('serve_assets', filename='icons/viral pneumonia icon.png') }}" alt="Viral Pneumonia">
+                        <h3>Viral Pneumonia</h3>
+                        <p>Antiviral medications like Oseltamivir, Remdesivir, and Acyclovir help treat virus-related pneumonia.</p>
+                    </div>
+                    <div class="medication-card">
+                        <img src="{{ url_for('serve_assets', filename='icons/fungal pneumonia icon.jpg') }}" alt="Fungal Pneumonia">
+                        <h3>Fungal Pneumonia</h3>
+                        <p>Medications like Fluconazole and Amphotericin B are effective for treating fungal infections.</p>
+                    </div>
+                    <div class="medication-card">
+                        <img src="{{ url_for('serve_assets', filename='icons/aspiration pneumonia.png') }}" alt="Aspiration Pneumonia">
+                        <h3>Aspiration Pneumonia</h3>
+                        <p>Antibiotics like Piperacillin-tazobactam, Clindamycin, and Ceftriaxone are used to treat mixed infections.</p>
+                    </div>
+                    <div class="medication-card">
+                        <img src="{{ url_for('serve_assets', filename='icons/Supportive treatments.png') }}" alt="Supportive Treatments">
+                        <h3>Supportive Treatments</h3>
+                        <p>Includes pain relievers, cough suppressants, oxygen therapy, and steroids for inflammation.</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Appointment Section -->
+        <section id="consultation">
+            <h2>Consultation</h2>
+            <section class="section appointment-section">
+                <h2>Doctor Consultation</h2>
+                <p>If pneumonia severity is high, schedule a consultation immediately.</p>
+                <button class="btn" onclick="bookAppointment()">Book an Appointment</button>
+            </section>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Pneumonia Detection System. Powered by AI Technology.</p>
+    </footer>
+
+    <script>
+        function analyzeImage() {
+            const results = document.getElementById('diagnosisResult');
+            const severityChart = document.getElementById('severityChart').getContext('2d');
+
+            // Mock results for demonstration
+            results.innerHTML = '<p><strong>Pneumonia Detected:</strong> Yes</p>';
+            results.innerHTML += '<p><strong>Confidence:</strong> 92%</p>';
+
+            // Severity Chart
+            new Chart(severityChart, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Mild', 'Moderate', 'Severe'],
+                    datasets: [{
+                        data: [30, 50, 20],
+                        backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+                    }],
+                },
+                options: {
+                    responsive: true,
+                },
+            });
+        }
+
+        function bookAppointment() {
+    window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSfXeFFs_Zz_zrXO11Axu_lde78s3Nl5u9ulgYm12Galch7VLQ/viewform?usp=dialog';
+}
+
+    </script>
+</body>
+</html>
