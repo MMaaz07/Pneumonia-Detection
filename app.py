@@ -40,7 +40,7 @@ def load_model():
     num_ftrs = model.classifier.in_features
     model.classifier = nn.Linear(num_ftrs, 2)
     try:
-        model.load_state_dict(torch.load("model.pt", map_location=torch.device('cpu')))
+        model.load_state_dict(torch.load("", map_location=torch.device('cpu'))) #add model.pt 
         print("✅ Model loaded successfully from model.pt")
     except Exception as e:
         print(f"❌ Error loading model: {e}")
@@ -56,7 +56,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 
 def load_tf_model():
     try:
-        tf_model = load_tf_model_lib(r"C:\Users\moham\OneDrive\Desktop\Pneumonia_Detection_2\project frontend\densenet_pneumonia.h5", compile=False)
+        tf_model = load_tf_model_lib(r"", compile=False) #add model.h5
         tf_model.make_predict_function()  # Required for thread safety
         print("✅ TensorFlow model loaded successfully")
         return tf_model
